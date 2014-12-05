@@ -11,6 +11,7 @@ class Matrix4
 {
   protected:
     double m[4][4];   // matrix elements; first index is for rows, second for columns (row-major)
+	float f[4][4];
     
   public:
     Matrix4();     
@@ -22,7 +23,7 @@ class Matrix4
 
 	Matrix4 operator*(const Matrix4&);
 	Vector4& operator*(const Vector4&);
-
+	float* getMatrixFloat();
 	void makeRotateX(double);
 	void makeRotateZ(double);
 	void makeRotate(double, const Vector3&);

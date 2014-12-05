@@ -16,7 +16,7 @@ namespace Globals
 {
   Object object;
   Shader *shader;
-
+  Shader *sky;
 };
 
 int main(int argc, char *argv[])
@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
   glClear(GL_DEPTH_BUFFER_BIT);       	      // clear depth buffer
   glClearColor(0.0, 0.0, 0.0, 0.0);   	      // set clear color to black
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // set polygon drawing mode to fill front and back of each polygon
-  glDisable(GL_CULL_FACE);     // disable backface culling to render both sides of polygons
   glShadeModel(GL_SMOOTH);             	      // set shading to smooth
   glMatrixMode(GL_PROJECTION); 
 
@@ -45,13 +44,11 @@ int main(int argc, char *argv[])
   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
   glEnable(GL_COLOR_MATERIAL);
-
-  glEnable(GL_TEXTURE_2D);
   // Generate light source:
-  glLightfv(GL_LIGHT3, GL_POSITION, position);
-  glLightfv(GL_LIGHT3, GL_AMBIENT, ambient);
+  glLightfv(GL_LIGHT0, GL_POSITION, position);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
   glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT3);
+  glEnable(GL_LIGHT0);
   // Install callback functions:
   glutDisplayFunc(Window::displayCallback);
   glutReshapeFunc(Window::reshapeCallback);
@@ -62,7 +59,8 @@ int main(int argc, char *argv[])
   glutSpecialFunc(Window::funcKeyboardCallback);
     
   // Initialize cube matrix:
-  Globals::shader = new Shader("spotlight.vert", "spotlight.frag", true);
+  Globals::shader = new Shader("reflection.vert", "reflection.frag", true);
+  Globals::sky = new Shader("skybox.vert", "skybox.frag", true);
   Globals::object.getMatrix().identity();
   Window::load();
   glutMainLoop();
