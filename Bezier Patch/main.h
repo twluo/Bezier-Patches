@@ -7,7 +7,6 @@ namespace Globals
 {
 	extern Shader *shader;
     extern Object object;
-	extern Shader *sky;
 };
 
 #endif

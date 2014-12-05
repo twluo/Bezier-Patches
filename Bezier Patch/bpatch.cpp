@@ -142,6 +142,10 @@ void bpatch::evalBPatch() {
 	Matrix4 pm1 = setMatrix(4, 5, 6, 7);
 	Matrix4 pm2 = setMatrix(8, 9, 10, 11);
 	Matrix4 pm3 = setMatrix(12, 13, 14, 15);
+	Matrix4 qm0 = setMatrix(0, 4, 8, 12);
+	Matrix4 qm1 = setMatrix(1, 5, 9, 13);
+	Matrix4 qm2 = setMatrix(2, 6, 10, 14);
+	Matrix4 qm3 = setMatrix(3, 7, 11, 15);
 	Matrix4 pm;
 	Matrix4 qm;
 	for (int i = 0; i < 100; i++) {
@@ -149,17 +153,17 @@ void bpatch::evalBPatch() {
 		q1 = evalBCurve(pm1, v);
 		q2 = evalBCurve(pm2, v);
 		q3 = evalBCurve(pm3, v);
-		p0 = evalBCurve(pm0, v+nDelta);
-		p1 = evalBCurve(pm1, v+nDelta);
-		p2 = evalBCurve(pm2, v+nDelta);
-		p3 = evalBCurve(pm3, v+nDelta);
 		w = 0;
 		for (int j = 0; j < 100; j++) {
+			p0 = evalBCurve(qm0, w);
+			p1 = evalBCurve(qm1, w);
+			p2 = evalBCurve(qm2, w);
+			p3 = evalBCurve(qm3, w);
 			qm = setMatrix(q0, q1, q2, q3);
 			pm = setMatrix(p0, p1, p2, p3);
 			vertices[i][j] = evalBCurve(qm , w);
 			tanp = evalBCurve(qm, w + nDelta) - vertices[i][j];
-			tanq = evalBCurve(pm, w) - vertices[i][j];
+			tanq = evalBCurve(pm, w + nDelta) - evalBCurve(pm, w);
 			tanp.normalize();
 			tanq.normalize();
 			normals[i][j] = tanp.cross(tanp,tanq);
